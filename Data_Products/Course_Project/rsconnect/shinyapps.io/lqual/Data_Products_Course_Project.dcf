@@ -1,0 +1,13 @@
+name: Data_Products_Course_Project
+title: Data_Products_Course_Project
+username:
+account: lqual
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 1331592
+bundleId: 2502409
+url: https://lqual.shinyapps.io/Data_Products_Course_Project/
+when: 1571154241.88629
+asMultiple: FALSE
+asStatic: FALSE
+ignoredFiles: .RData|nfl2016.csv|nfl2017.csv|nfl2018.csv|start.R

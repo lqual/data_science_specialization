@@ -1,0 +1,92 @@
+---
+title: "Transmission Effect on MPG"
+author: "Lucas Qualmann"
+date: "9/29/2019"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+## Executive Summary
+
+This report shows that a manual transmission gets better gas mileage than an automatic transmission after using horsepower as a confounding variable.  Even with an outlier data point working against this hypothesis, the model confirmed this conclusion.  This report highlights the steps taken and analysis done to confirm the model is a good fit.  All of the R code used in this analysis isn't included in this document as it was not wanted under the criteria for this assignment.
+
+## Exploratory Data Analysis
+
+First, we want to make sure there is some perceived relationship between mpg and transmission type, so we plot a boxplot showing mpg based on transmission type (see appendix).  This plot shows that manual transmissions have a higher mpg rate than automatic transmissions, so that is the hypothesis our model will seek to prove.
+
+Next we want to get an idea of what variables were most correlated to each other and mpg to know what variables would be most important to use for our model since the correlation between transmission type and mpg might be explained more by other variables than just transmission (see appendix for table).  As a result of this table, we found disp, hp, wt, and carb to be highly correlated to each other.  Drat and qsec were another pair of correlations followed by vs and am.
+
+## Model Selection
+
+Based on our exploratory data analysis and knowledge of what car items should have a strong effect on mpg, we will narrow down our potential list of variables in addition to transmission type to cyl (# of cylinders), disp (displacement), hp (horsepower), wt(weight in 1,000 lbs), carb (# of carburetors), and vs (engine shape).  After making a model with all of these variables, disp was eliminated as a possibility because it had the highest standard deviation of variables (highest correlation to the other variables in the model).  In the next model run, vs and cyl were eliminated as they had the highest p-values.  This left us with 3 variables to use for our model: hp, wt, and carb.
+
+We'll build 8 linear models containing all of the combinations of the 3 remaing variables: 1 model of just transmission type, 3 models of transmission plus 1 variable, 3 models of transmission plus 2 variables, and 1 model of transmission plus 3 variables.  We'll then use the anova function to compare the models.  Based on the anova function, the model with the best F and P-values is mpg ~ factor(am) + hp - 1.  So our model will look at transmission type and horsepower.
+
+```{r,echo=TRUE}
+mdl2 <- lm(mpg ~ factor(am) + hp - 1, data = mtcars)
+model <- mdl2
+summary(model)
+```
+
+## Diagnostics, Residuals, and Confidence Intervals
+
+Next we'll do some model analysis.  First we'll look at a plot of the model (see appendix).  The first chart in this plot of 4 charts is residuals vs fitted plot.  If there are any patterns in this chart, that's a sign there is a pattern that our model has missed.  In this case, no strong pattern is developing, so there isn't anything to worry about here.  The other three charts show us if there are any data points which look like outliers which could affect our analysis.  There does appear to be one data point, the Maserati Bora, which could be affecting our analysis.  We'll do a couple more pieces of analysis to confirm.
+
+Looking at both a hatvalues plot (leverage of points) and dfbetas (slope change without a point) plot show the Maserati Bora as a highly leveraged and influential point for our model compared to the other points (see appendix for plots).  While this could be messing up our model and have us want to remove the data point, when we look at the values for the Maserati Bora, we see it has a mpg of 15.0 and a manual transmission.  This means that the data point is actually working against our hypothesis that manual transmissions have better gas mileage than automatic transmissions.  Because of this, we will keep it to avoid biasing the model in a way which would help our hypothesis.
+
+Finally, we want to look at confidence intervals.  Since we've broken out both transmission types in our model, the coefficient of each variable is the mean of that transmission type over all horsepower.  The mean for an automatic transmission is 26.6 mpg, and the mean for a manual transmission is 31.9 mpg.  Let's look at the 95% confidence intervals for both of those values to make sure the type of transmission is significantly affecting the mpg.
+
+```{r}
+confint(model)[1,]
+```
+Above: confidence interval of automatic transmission mpg.
+
+```{r}
+confint(model)[2,]
+```
+Above: confidence interval of manual transmission mpg.
+
+As you can see, there is only a slight overlap in the confidence interval values of the means between manual and automatic transmission (the overlap is small enough we don't need to explore it any further to make sure it is insignificant as it obviously is).  Therefore, we can view the model as statistically significant.
+
+## Conclusion
+
+We are able to conclude that the type of transmission does have an effect on mpg when including horsepower as a confounding variable.  MPG is on average 5.3 mpg higher with a manual transmission than an automatic transmission.
+
+## Appendix
+
+### Exploratory Data Analysis
+
+```{r, fig.width=5, fig.height=3.5}
+boxplot(mpg ~ am, data = mtcars, col = "red", ylab = "MPG", 
+        xlab = "Transmission (0 = automatic,1 = manual)", 
+        main = "MPG Based on Transmission Type")
+```
+
+```{r}
+cor(mtcars)
+```
+
+### Diagnostics, Residuals, and Confidence Intervals
+
+```{r}
+par(mfrow = c(2, 2))
+plot(model)
+```
+
+```{r, fig.width=6, fig.height=4}
+par(mfrow = c(1, 1))
+plot(hatvalues(model), ylab = "Hatvalue", main = "Hatvalues of Model", 
+     pch = 19, col = "orange", cex = 1.5)
+text(hatvalues(model), labels=rownames(mtcars), cex=0.6)
+```
+
+```{r, fig.width=6, fig.height=4}
+plot(dfbetas(model), main = "Dfbeta Values of Model", 
+     xlab = "Automatic Transmission", ylab = "Manual Transmission", 
+     pch = 19, col = "green", cex = 1.5)
+text(dfbetas(model), labels=rownames(mtcars), cex=0.6)
+```
+

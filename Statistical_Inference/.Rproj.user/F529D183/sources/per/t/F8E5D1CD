@@ -1,0 +1,25 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1569200657903.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "3217302275",
+    "id" : "F8E5D1CD",
+    "lastKnownWriteTime" : 1569202602,
+    "last_content_update" : 1569202602597,
+    "path" : "~/R Directory/Statistical_Inference/si_course_project/simulationCode.R",
+    "project_path" : "si_course_project/simulationCode.R",
+    "properties" : {
+        "cursorPosition" : "67,0",
+        "scrollLine" : "47"
+    },
+    "read_only" : false,
+    "read_only_alternatives" : [
+    ],
+    "relative_order" : 1,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_source"
+}

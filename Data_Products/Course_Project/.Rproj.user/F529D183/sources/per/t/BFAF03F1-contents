@@ -1,0 +1,161 @@
+---
+title: "Reproducible Research: Peer Assessment 1"
+output: 
+  html_document:
+    keep_md: true
+---
+### Setting global options for R code.
+```{r setoptions,echo=TRUE}
+library(knitr)
+opts_chunk$set(echo=TRUE)
+```
+
+## Loading and preprocessing the data
+
+The first step is to unzip the data file if it hasn't been unzipped already.  After that, read the csv file into R.  The only transformation that needs to be done on the data at this time is to change the dates from factors into dates.
+
+```{r}
+#unzips data file if it hasn't already been unzipped
+#(zip file was automatically in repository)
+if(!file.exists("activity.csv")) {
+        unzip("activity.zip")
+}
+        
+#readdata into R
+data <- read.csv("activity.csv")
+        
+#transform dates from factors to dates
+data$date <- as.Date(data$date)
+```
+
+## What is mean total number of steps taken per day?
+
+Here, we will create a histogram of the total number of steps taken each day.  First, we will need to make a new data frame which groups the steps by date and calculates the total number of steps for each date.  Then we will plot the histogram.  Finally, we'll calculate the mean and median for number of steps each day (while removing any NA values for the calculation).
+
+```{r}
+#organize data by total steps per day and pull out total steps value
+library(dplyr)
+dataPlot1 <- data %>% select(steps, date) %>% group_by(date) %>% 
+        summarize(total = sum(steps))
+xPlot1 <- dataPlot1 %>% pull(total)
+        
+#Create histogram
+hist(xPlot1, xlab = "Number of Steps", ylab = "Days", breaks = 8, 
+     ylim = c(0, 20), main = "Total Number of Steps Taken Each Day", 
+     col = "green")
+        
+#calculate the mean and median
+meansteps <- mean(xPlot1, na.rm = TRUE)
+mediansteps <- median(xPlot1, na.rm = TRUE)
+stats <- data.frame("Statistic" = c("Mean", "Median"), 
+                    "Value" = c(meansteps, mediansteps))
+print(stats)
+```
+
+For the total number of steps taken each day, the mean is `r meansteps`, and the median is `r mediansteps`.
+
+## What is the average daily activity pattern?
+
+For this section, we need to summarize the data by time interval by the average number of steps over the entire data set (ignoring NA's).  Then we'll pull the interval data into xPlot2 to come up with our x variables for the plot, and pull the average data into yPlot2 for the y variables.  With the variables, we'll make a plot of the average steps for each 5-minute interval.  Our last step is to calculate the largest average number of steps for the 5-minute intervals and return which 5-minute interval that is.
+
+```{r}
+#calculate average steps for each 5 minute interval
+dataPlot2 <- data %>% select(steps, interval) %>% group_by(interval) %>% 
+        summarize(average = mean(steps, na.rm = TRUE))
+xPlot2 <- dataPlot2 %>% pull(interval)
+yPlot2 <- dataPlot2 %>% pull(average)
+
+#Create time series plot
+plot(xPlot2, yPlot2, type = "l", xlab = "5-minute Interval", 
+     ylab = "Steps", 
+     main = "Average Number of Steps per 5-minute Interval", 
+     col = "red", lwd = 2)
+
+#calculate 5-minute interval with highest average number of steps
+maxSteps <- max(dataPlot2$average)
+maxInterval <- dataPlot2 %>% filter(average == maxSteps) %>% 
+        pull(interval)
+stats2 <- data.frame("Max_Interval" = maxInterval, "Max_Steps" = maxSteps)
+print(stats2)
+```
+
+The 5-minute interval with the highest average number of steps is `r maxInterval`.
+
+## Imputing missing values
+
+First, let's look at the number of missing values in the dataset.
+
+```{r}
+#calculate the total number of NA's
+percentNA <- mean(is.na(data$steps))
+totalNA <- sum(is.na(data$steps))
+stats3 <- data.frame("Statistic" = c("Percent of NA's", "Total NA's"), 
+                     "Value" = c(percentNA, totalNA))
+print(stats3)
+```
+
+The percentage of steps data which are NA's is `r percentNA`, and the total number of NA's in the steps data is `r totalNA`.
+
+For filling in the missing values, we will use the average value of the non missing data for each 5-minute interval as a substitute for the NA's.  We'll make a new data set with two new columns: the average value for the 5-minute interval and the new steps value which will equal the 5-minute interval average if the steps value is NA and the steps value if it isn't NA.  Then we'll create a histogram plot of the number of steps taken each day with the new imputed data.  Finally, we'll find the mean and median of the number of steps taken each day of the imputed data and compare that to the mean and median we calculated from the original data.
+
+```{r}
+#create new dataset with missing data filled in using the average value of the 5-minute intervals as a replacement for NA values
+aveInt <- data.frame(dataPlot2)
+data2 <- data %>% 
+        mutate(aveInt = aveInt[match(interval, aveInt$interval), 2]) %>% 
+        mutate(newSteps = ifelse(is.na(steps), aveInt, steps))
+
+#organize data by total steps per day and pull out total steps value
+dataPlot3 <- data2 %>% select(newSteps, date) %>% group_by(date) %>% 
+        summarize(total = sum(newSteps))
+xPlot3 <- dataPlot3 %>% pull(total)
+
+#Create histogram
+hist(xPlot3, xlab = "Number of Steps", ylab = "Days", breaks = 8, 
+     main = "Total Number of Steps Taken Each Day (Imputed Data)", 
+     col = "blue", ylim = c(0, 25))
+
+#calculate the mean and median
+meansteps2 <- mean(xPlot3)
+mediansteps2 <- median(xPlot3)
+stats4 <- data.frame("Statistic" = c("Mean", "Median"), 
+                    "Value" = c(meansteps2, mediansteps2))
+print(stats4)
+```
+
+With the new data and for the total number of steps taken each day, the mean is `r meansteps2`, and the median is `r mediansteps2`.
+
+```{r}
+#compare to prior values
+meanChange <- meansteps2 - meansteps
+medianChange <- mediansteps2 - mediansteps
+stats5 <- data.frame("Value Change" = c("Mean", "Median"), 
+                     "Value" = c(meanChange, medianChange))
+print(stats5)
+```
+
+With the imputed data, the mean changed `r meanChange`, and the median changed `r medianChange`.
+
+## Are there differences in activity patterns between weekdays and weekends?
+
+Finally, we want to see if there are differences in the number of steps between weekdays and weekends.  To do this, we first need to create a new factor in our dataset which returns whether it is a weekday or a weekend.  Then we'll group the data first by interval and then by weekday/weekend and find the average of the intervals.  Finally we'll make a panel plot of the result to compare weekday and weekend activity. 
+
+```{r}
+#create new factor with weekday and weekend variables
+library(dplyr)
+data2 <- data2 %>% 
+        mutate(day = ifelse(weekdays(date) == "Saturday", "weekend", 
+                            ifelse(weekdays(date) == "Sunday", "weekend",
+                                   "weekday")))
+
+#create the plot data by averaging the steps by interval and weekday/weekend
+dataPlot4 <- data2 %>% select(newSteps, interval, day) %>% 
+        group_by(interval, day) %>% summarize(average = mean(newSteps)) 
+
+#make a panel plot of the 5-minute intervals across weekdays and weekends
+library(ggplot2)
+plot4 <- ggplot(dataPlot4, aes(interval, average))
+plot4 + facet_grid(day ~ .) + geom_line(color = "purple") + 
+        labs(title = "Average Number of Steps", y = "Steps", 
+             x = "5-minute Interval", subtitle = "per 5-minute Interval")
+```

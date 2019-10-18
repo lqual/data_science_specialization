@@ -1,0 +1,25 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1568502788804.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "2934126465",
+    "id" : "28ED2A5",
+    "lastKnownWriteTime" : 1568505203,
+    "last_content_update" : 1568505203036,
+    "path" : "~/R Directory/Reproducible_Research/Week_4/reproducible_research_project4/dataProcessing.R",
+    "project_path" : "reproducible_research_project4/dataProcessing.R",
+    "properties" : {
+        "cursorPosition" : "79,75",
+        "scrollLine" : "71"
+    },
+    "read_only" : false,
+    "read_only_alternatives" : [
+    ],
+    "relative_order" : 1,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_source"
+}

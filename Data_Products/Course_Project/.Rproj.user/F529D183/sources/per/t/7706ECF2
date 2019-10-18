@@ -1,0 +1,26 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1571078052047.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "2111517922",
+    "id" : "7706ECF2",
+    "lastKnownWriteTime" : 1571154164,
+    "last_content_update" : 1571154164897,
+    "path" : "~/R Directory/Data_Products/Course_Project/server.R",
+    "project_path" : "server.R",
+    "properties" : {
+        "cursorPosition" : "34,16",
+        "scrollLine" : "16",
+        "tempName" : "Untitled1"
+    },
+    "read_only" : false,
+    "read_only_alternatives" : [
+    ],
+    "relative_order" : 3,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_source"
+}

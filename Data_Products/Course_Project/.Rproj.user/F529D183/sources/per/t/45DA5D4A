@@ -1,0 +1,26 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1571154647135.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "406927708",
+    "id" : "45DA5D4A",
+    "lastKnownWriteTime" : 1571156450,
+    "last_content_update" : 1571156450150,
+    "path" : "~/R Directory/Data_Products/Course_Project/presentation.Rmd",
+    "project_path" : "presentation.Rmd",
+    "properties" : {
+        "cursorPosition" : "16,0",
+        "scrollLine" : "8",
+        "tempName" : "Untitled1"
+    },
+    "read_only" : false,
+    "read_only_alternatives" : [
+    ],
+    "relative_order" : 5,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_markdown"
+}

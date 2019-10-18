@@ -1,0 +1,23 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1571156280161.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "2575010445",
+    "id" : "BFAF03F1",
+    "lastKnownWriteTime" : 1568330533,
+    "last_content_update" : 1568330533,
+    "path" : "~/R Directory/Reproducible_Research/Week_2/RepData_PeerAssessment1/PA1_template.Rmd",
+    "project_path" : null,
+    "properties" : {
+    },
+    "read_only" : false,
+    "read_only_alternatives" : [
+    ],
+    "relative_order" : 6,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_markdown"
+}

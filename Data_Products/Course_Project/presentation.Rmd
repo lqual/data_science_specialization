@@ -1,0 +1,53 @@
+---
+title: "Black Cherry Tree Logging App"
+author: "Lucas Qualmann"
+date: "10/15/2019"
+output: ioslides_presentation
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+## Logging Black Cherry Trees
+
+- Are you bad at estimating how much wood you'll get from chopping down black cherry trees?
+- Do you always park your truck to close to the tree you're cutting down?
+- Would you just like to do your job without having to think so hard?
+
+Our app is your solution!
+
+## How it Works
+
+Easily estimate the voume and height of your black cherry tree with one simple measurement!
+
+- Measure the diameter of the tree in inches 4 ft 6 in off the ground.
+- Plug that measurement into the slider on the app.
+- See an estimate for the tree's volume and height.
+
+## Sample Volume Plot
+```{r echo=FALSE}
+modelV <- lm(Volume ~ Girth, data = trees)
+predV <- round(predict(modelV, newdata = data.frame(Girth = mean(trees$Girth))),
+               2)
+plot(trees$Girth, trees$Volume, pch = 19, col = "blue", cex = 1.5, 
+     xlab = "Diameter (inches)", ylab = "Volume (cubic feet)", 
+     main = "Black Cherry Tree Volume vs Diameter", xlim = c(8, 21), 
+     ylim = c(0, 80))
+abline(modelV, col = "orange", lwd = 3)
+abline(v = mean(trees$Girth), lwd = 2, lty = 2, col = "red")
+abline(h = predV, lwd = 2, lty = 2, col = "red")
+```
+
+Predicted Volume (cubic feet):  `r predV`
+
+## Data Used
+
+The trees dataset in R contains 31 observations of felled black cherry trees with 3 variables: girth (diameter in inches), height (in feet), and volume (in cubic feet).  See a summary of the data below.
+
+```{r cars, echo = TRUE, comment=""}
+summary(trees)
+```
+
+
+

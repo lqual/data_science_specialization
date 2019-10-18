@@ -1,0 +1,26 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1569704560122.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "1711543702",
+    "id" : "910B1CC0",
+    "lastKnownWriteTime" : 1569773713,
+    "last_content_update" : 1569773713644,
+    "path" : "~/R Directory/Regression_Models/courseProject.R",
+    "project_path" : "courseProject.R",
+    "properties" : {
+        "cursorPosition" : "61,0",
+        "scrollLine" : "55",
+        "tempName" : "Untitled1"
+    },
+    "read_only" : false,
+    "read_only_alternatives" : [
+    ],
+    "relative_order" : 1,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_source"
+}

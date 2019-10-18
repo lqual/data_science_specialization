@@ -1,0 +1,25 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1569774435815.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "3503457909",
+    "id" : "86C245B3",
+    "lastKnownWriteTime" : 1569270348,
+    "last_content_update" : 1569270348,
+    "path" : "~/R Directory/Statistical_Inference/si_course_project/part1.RMD",
+    "project_path" : null,
+    "properties" : {
+        "cursorPosition" : "34,16",
+        "scrollLine" : "33"
+    },
+    "read_only" : false,
+    "read_only_alternatives" : [
+    ],
+    "relative_order" : 3,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_markdown"
+}
